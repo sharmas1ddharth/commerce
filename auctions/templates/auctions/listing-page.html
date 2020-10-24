@@ -1,0 +1,234 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'auctions/plugins/themify-icons/themify-icons.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/single_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/single_responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/listing-page-button.css' %}">
+<script src="{% static 'auctions/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'auctions/styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'auctions/styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'auctions/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'auctions/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'auctions/plugins/easing/easing.js' %}"></script>
+<script src="{% static 'auctions/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'auctions/js/single_custom.js' %}"></script>
+
+{% endblock %}
+{% block body %}
+<div class="container single_product_container">
+	<div class="row">
+		<div class="col">
+
+			<!-- Breadcrumbs -->
+
+			<div class="breadcrumbs d-flex flex-row align-items-center">
+				<ul>
+					<li><a href="index.html">Category</a></li>
+					<li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>{{i.category}}</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-7">
+			<div class="single_product_pics">
+				<div class="row">
+
+					<div class="col-lg-9 image_col order-lg-2 order-1">
+						<div class="single_product_image">
+							<div class="single_product_image_background" style="background-image:url({{i.link}})"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="product_details">
+				<div class="product_details_title">
+					<h2>{{i.title}}</h2>
+					<br>
+					<p>{{i.description}}</p>
+				</div>
+				<br>
+				<div class="product_price"><span>Current Bid : &nbsp;</span> ${{i.price}}</div>
+				<br>
+				<br>
+				{% if error %}
+				<div class="alert alert-danger" role="alert">
+					{{error}}
+				</div>
+				{% endif %}
+				{% if errorgreen %}
+				<div class="alert alert-success" role="alert">
+					{{errorgreen}}
+				</div>
+				{% endif %}
+				{% if user.username %}
+				<div class="container2" style="top: 4em;
+					right: 3em;">
+					<div class="container__item">
+						<form class="form" action="{% url 'bidsubmit' i.id %}" method="POST">
+							{% csrf_token %}
+							<input type="number" class="form__field" name="bid" placeholder="Your Bid..." />
+							<button type="submit" class="btn btn--primary btn--inside uppercase">Bid.</button>
+						</form>
+					</div>
+					{% else %}
+					<h5>Register <a href ="{% url 'register' %}">here</a> to Bid for this product</h5>
+					{% endif %}
+					<div class="container__item" style="top: 4em;
+						right: 1em;">
+						{% if user.username %}
+
+						{% if added %}
+						<a href="{% url 'removewatchlist' i.id %}"><button
+								class="btn btn--primary btn--inside uppercase" style="margin-left: 4em;">Remove from
+								watchlist</button></a>
+						{% else %}
+						<a href="{% url 'addwatchlist' i.id %}"><button class="btn btn--primary btn--inside uppercase"
+								style="    margin-left: 4em;">Add to watchlist</button></a>
+						{% endif %}
+
+
+						{% endif %}
+
+						{% if user.username %}
+						{% if owner %}
+
+						<a href="{% url 'closebid' i.id %}"><button class="btn btn--primary btn--inside uppercase"
+								style="margin-left:1em;">Close Bid</button></a>
+
+						{% endif %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+
+<!-- Tabs -->
+
+<div class="tabs_section_container">
+
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="tabs_container">
+					<ul
+						class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+						<li class="tab" data-active-tab="tab_1"><span>Additional Information</span></li>
+						<li class="tab" data-active-tab="tab_2"><span>Comments</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+
+
+				<!-- Tab Additional Info -->
+
+				<div id="tab_1" class="tab_container">
+					<div class="row">
+						<div class="col additional_info_col">
+							<div class="tab_title additional_info_title">
+								<h4>Additional Information</h4>
+							</div>
+							<p>OWNER:<span>{{i.owner}}</span></p>
+							<p>CATEGORY:<span>{{i.category}}</span></p>
+							<p>CREATED ON:<span>{{i.time}}</span></p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tab Reviews -->
+
+				<div id="tab_2" class="tab_container">
+					<div class="row">
+
+						<!-- User Reviews -->
+
+						<div class="col-lg-6 reviews_col">
+							<div class="tab_title reviews_title">
+								<h4>Comments</h4>
+							</div>
+
+							<!-- User Review -->
+							{% for c in comments %}
+							<div class="user_review_container d-flex flex-column flex-sm-row">
+								<div class="user">
+									<div class="user_pic"></div>
+								</div>
+								<div class="review">
+									<div class="review_date">{{c.time}}</div>
+									<div class="user_name">{{c.user}}</div>
+									<p>{{c.comment}}</p>
+								</div>
+							</div>
+							{% endfor %}
+
+
+
+							<!-- User Reviews -->
+
+
+							<!-- User Review -->
+
+
+
+							<!-- User Review -->
+
+
+
+							<!-- Add Review -->
+
+							{% if user.username %}
+							<div class="col-lg-6 add_review_col">
+
+								<div class="add_review">
+									<form action="{% url 'cmtsubmit' i.id %}" method="POST">
+										{% csrf_token %}
+										<div>
+											<h1>Add Comment</h1>
+
+										</div>
+										<div>
+
+											<textarea id="review_message" class="input_review" name="comment"
+												placeholder="Your Comment" rows="4" required
+												data-error="Please, leave us a review." style="width: 46em;"></textarea>
+										</div>
+										<div class="text-left text-sm-right">
+											<button id="review_submit" type="submit"
+												class="red_button review_submit_btn trans_300"
+												value="Submit" style="    margin-top: 2em;
+												margin-right: 5em;">submit</button>
+										</div>
+									</form>
+								</div>
+
+							</div>
+							{% endif %}
+						</div>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+</div>
+{% endblock %}

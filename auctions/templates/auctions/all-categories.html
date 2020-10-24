@@ -1,0 +1,28 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+{% block extrahead %}
+<link href="{% static 'auctions/all-categories.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block body %}
+
+<div class="list-container">
+    <div class="items">
+      <div class="items-head">
+        <p>All Categories</p>
+        <hr>
+      </div>
+      
+      <div class="items-body">
+        {% for i in items %}
+        <div class="items-body-content">
+          <span><a href = "{% url 'category' i.category %}">{{i.category}}</a></span>
+          <i class="fa fa-angle-right"></i>
+        </div>
+        {% endfor %}  
+        
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

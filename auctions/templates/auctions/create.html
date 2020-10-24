@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block extrahead %}
+<link href="{% static 'auctions/createlisting.css' %}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="wrapper fadeInDown">
+  <div id="formContent" style="max-width: 81em; margin-top:10em;">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Create Listing </h2>
+    
+<form action="{% url 'submit' %}" method="post">
+  {% csrf_token %}
+  
+      <input class="fadeIn second" autofocus type="text" name="title" placeholder="Listing title...">
+      <select  name="category" id="select">
+        <option  selected><strong> Select Category</strong></option>
+        <option id="category"><strong>Electronics</strong></option>
+        <option id="category"><strong>Tools</strong></option>
+        <option id="category"><strong>Fashion</strong></option>
+        <option id="category"><strong>Books</strong></option>
+        <option id="category"><strong>Sports</strong></option>
+      </select>
+      <input class="fadeIn third" type="number" name="price" placeholder="Initial Bid...">
+      <input type="text" name="link" placeholder="Image Link...">
+      <textarea name="description" id="" cols="30" rows="10" placeholder="Listing description here..."></textarea>
+      <br>
+      <br>
+      <input class="fadeIn fourth" type="submit" value="Submit">
+
+</form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block extrahead %}
+<link href="{% static 'auctions/card.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'auctions/plugins/themify-icons/themify-icons.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/single_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/single_responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/styles/listing-page-button.css' %}">
+<script src="{% static 'auctions/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'auctions/styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'auctions/styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'auctions/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'auctions/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'auctions/plugins/easing/easing.js' %}"></script>
+<script src="{% static 'auctions/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'auctions/js/single_custom.js' %}"></script>
+<style>
+
+</style>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <h2>Your Winnings</h2>
+</div>
+
+<div class="container" id="listings">
+    {% for item in items %}
+    {% for i in item %}
+    <div class="blog-card" style="height: 25em;">
+      <div class="meta">
+        <div class="photo" style="background-image: url({{i.link}})"></div>
+        <ul class="details">
+          {% for j in wonitems %}
+          <li class="author">By {{j.owner}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="description">
+        <h1>{{i.title}}</h1>
+        <h2>{{i.time}}</h2>
+        <p>{{i.description}}</p>
+        <br>
+        <br>
+        {% for j in wonitems %}
+        {% if i.listingid == j.listingid %}
+     
+        <h4>Congratulations 🏆 You won this bid.</h4>
+  
+        <br>
+        <h4 style="display: inline-block;">Winning Bid :  &nbsp;<h4 style="color:#fe4c50; display:inline-block;">${{j.winprice}}</h4></h4>
+    
+        {% endif %}
+              {% endfor %}
+        
+      </div>
+    </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {% endfor %}
+      {% endfor %}
+</div>
+{% endblock %}
+
+

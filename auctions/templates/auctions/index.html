@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block extrahead %}
+<link href="{% static 'auctions/card.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block body %}
+
+
+<div class="qqwer"> 
+{% for i in items %}
+<div class="blog-card" style="height: 25em;">
+  <div class="meta">
+    <div class="photo" style="background-image: url({{i.link}})"></div>
+    <ul class="details">
+      <li class="author">By {{i.owner}}</li>
+      
+    </ul>
+  </div>
+  <div class="description">
+    <h1>{{i.title}}</h1>
+    <h2>{{i.time}}</h2>
+    <p>{{i.description}}</p>
+    <h4 style="display: inline-block;">Current Bid :  &nbsp;<h4 style="color:#fe4c50; display:inline-block; margin-top: 2em;">${{i.price}}</h4></h4>
+    <p class="read-more" style="    margin: -3rem 0 0;">
+      <a href="{% url 'listingpage' i.id %}">Bid</a>
+    </p>
+  </div>
+</div>
+</div>
+{% endfor %}
+</div> 
+{% endblock %}
